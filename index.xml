@@ -1,0 +1,18 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>lghost&#39;s blog</title>
+        <link>https://lghost1999.github.io/</link>
+        <description>lghost&#39;s blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>lghost1999@126.com (lghost)</managingEditor>
+            <webMaster>lghost1999@126.com (lghost)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Mon, 10 Oct 2022 17:22:15 &#43;0800</lastBuildDate>
+            <atom:link href="https://lghost1999.github.io/index.xml" rel="self" type="application/rss+xml" />
+        <item>
+    <title>算法题模板</title>
+    <link>https://lghost1999.github.io/algorithm_template/</link>
+    <pubDate>Mon, 10 Oct 2022 17:22:15 &#43;0800</pubDate>
+    <author>lghost</author>
+    <guid>https://lghost1999.github.io/algorithm_template/</guid>
+    <description><![CDATA[<p>Acwing算法基础课模板</p>]]></description>
+</item>
+</channel>
+</rss>
