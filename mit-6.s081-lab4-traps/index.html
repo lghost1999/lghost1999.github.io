@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>MIT 6.S081 Lab4 Traps - lghost&#39;s blog</title><meta name="Description" content="MIT 6.S801实验4"><meta property="og:title" content="MIT 6.S081 Lab4 Traps" />
+<meta property="og:description" content="MIT 6.S801实验4" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://lghost1999.github.io/mit-6.s081-lab4-traps/" /><meta property="og:image" content="https://lghost1999.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-11-08T00:33:31+08:00" />
+<meta property="article:modified_time" content="2022-11-08T00:33:31+08:00" /><meta property="og:site_name" content="lghost&#39;s blog" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://lghost1999.github.io/logo.png"/>
+
+<meta name="twitter:title" content="MIT 6.S081 Lab4 Traps"/>
+<meta name="twitter:description" content="MIT 6.S801实验4"/>
+<meta name="application-name" content="lghost&#39;s blog">
+<meta name="apple-mobile-web-app-title" content="lghost&#39;s blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://lghost1999.github.io/mit-6.s081-lab4-traps/" /><link rel="prev" href="https://lghost1999.github.io/mit-6.s081-lab3-pgtbl/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "MIT 6.S081 Lab4 Traps",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/lghost1999.github.io\/mit-6.s081-lab4-traps\/"
+        },"image": [{
+                            "@type": "ImageObject",
+                            "url": "https:\/\/lghost1999.github.io\/images\/Apple-Devices-Preview.png",
+                            "width":  3200 ,
+                            "height":  2048 
+                        }],"genre": "posts","keywords": "操作系统","wordcount":  3700 ,
+        "url": "https:\/\/lghost1999.github.io\/mit-6.s081-lab4-traps\/","datePublished": "2022-11-08T00:33:31+08:00","dateModified": "2022-11-08T00:33:31+08:00","license": "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher": {
+            "@type": "Organization",
+            "name": "xxxx","logo": {
+                    "@type": "ImageObject",
+                    "url": "https:\/\/lghost1999.github.io\/images\/avatar.png",
+                    "width":  528 ,
+                    "height":  560 
+                }},"author": {
+                "@type": "Person",
+                "name": "lghost"
+            },"description": "MIT 6.S801实验4"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="lghost&#39;s blog">lghost&#39;s blog</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="lghost&#39;s blog">lghost&#39;s blog</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">MIT 6.S081 Lab4 Traps</h1><div class="post-meta">
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-11-08">2022-11-08</time>&nbsp;&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 3700 字&nbsp;&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 8 分钟&nbsp;&nbsp;
+    
+
+    
+        
+
+        
+        
+            <span id="busuanzi_container_value_page_pv"><i class="far fa-eye fa-fw"></i>
+                
+                <span id="busuanzi_value_page_pv"></span>&nbsp;次阅读</span>
+        
+    
+
+
+&nbsp;<span class="post-category">收录于 <a href="/categories/6.s081/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>6.S081</a></span></div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#课程知识">课程知识</a>
+      <ul>
+        <li><a href="#risc和cisc">RISC和CISC</a></li>
+        <li><a href="#栈">栈</a></li>
+        <li><a href="#xv6的trap机制">xv6的trap机制</a></li>
+      </ul>
+    </li>
+    <li><a href="#实验内容">实验内容</a>
+      <ul>
+        <li><a href="#risc-v-assembly-easy">RISC-V assembly (easy)</a></li>
+        <li><a href="#backtracemoderate">Backtrace(moderate)</a></li>
+        <li><a href="#alarmhard">Alarm(Hard)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="课程知识">课程知识</h2>
+<h3 id="risc和cisc">RISC和CISC</h3>
+<p>xv6运行在<code>RISC-V</code>处理器上，<code>RISC-V</code>是精简指令集(RISC)，和传统以<code>x86-64</code>为代表的复杂指令集(CISC)存在一下区别：</p>
+<ul>
+<li><code>RISC</code>拥有更少的指令数量，<code>CISC</code>需要向后兼容，指令数目会不断变大</li>
+<li><code>RISC</code>指令功能简单，可以减少CPU执行时间，<code>CISC</code>指令功能复杂，指令周期较长</li>
+</ul>
+<h3 id="栈">栈</h3>
+<p>xv6每次调用函数，系统都会创建一个栈帧<code>Stack Frame</code>，系统通过移动栈指针<code>Stack Pointer</code>来完成<code>Stack Frame</code>的空间分配。栈从高地址向低地址增长，<code>Stack Poiner</code>需要向下移动来创建一个新的<code>Stack Frame</code>。xv6栈结构图如下所示：</p>
+<div align=center><img src="https://typora-lghost.oss-cn-shanghai.aliyuncs.com/img/202211082353571.png" style="zoom: 50%;" /></div>
+<p>每个<code>Stack Frame</code>均包含<code>Retrun Address</code>和指向前一个<code>Frame</code>的指针，同时会保存寄存器和一些本地变量，系统维护两个寄存器<code>SP(Stack Pointer)</code>和<code>FP(Frame Pointer)</code>，<code>SP</code>指向当前<code>Frame</code>的底部，<code>FP</code>指向当前<code>Frame</code>的顶部，可以通过<code>FP</code>找到每个栈中的固定位置的<code>Return Address</code>和指向前一个<code>Frame</code>的指针，保证函数正确调用和返回。</p>
+<h3 id="xv6的trap机制">xv6的trap机制</h3>
+<p>从用户空间到内核空间的切换被称为陷入<code>trap</code>，<code>trap</code>是异常控制流的一种，<code>trap</code>分为三类 系统调用，异常和设备中断。</p>
+<p>xv6的<code>trap</code>处理过程，以系统调用为例：</p>
+<div align=center><img src="https://typora-lghost.oss-cn-shanghai.aliyuncs.com/img/202211090009320.png" alt="6.S081-lab4" style="zoom: 25%;" /></div>
+<ol>
+<li>
+<p>用户请求系统调用，将系统调用号写入<code>a7</code>寄存器，并调用<code>ecall</code>指令。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="c1"># kernel/usys.S
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="na">...</span>
+</span></span><span class="line"><span class="cl"><span class="na">.global</span> <span class="no">write</span>
+</span></span><span class="line"><span class="cl"><span class="nl">write:</span>
+</span></span><span class="line"><span class="cl"> <span class="nf">li</span> <span class="no">a7</span><span class="p">,</span> <span class="no">SYS_write</span>
+</span></span><span class="line"><span class="cl"> <span class="nf">ecall</span>
+</span></span><span class="line"><span class="cl"> <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl"> <span class="na">...</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>ecall</code>指令执行内容：</p>
+<ul>
+<li><code>ecall</code>将状态从用户态设置为内核态</li>
+<li>将<code>pc</code>值保存在<code>sepc</code>寄存器中，</li>
+<li>设置好<code>stvec</code>，即<code>trapline page</code>的起始位置<code>uservec</code>函数，跳转<code>stvec</code>寄存器指向的指令</li>
+</ul>
+<blockquote>
+<p><code>ecall</code>指令并不会切换页表，为了能在用户页表下可以执行<code>uservec</code>，用户页表必须包含<code>uservec</code>的映射。<code>xv6</code>利用<code>trampoline page</code>实现，<code>trampoline page</code>在用户空间和内核空间都映射到了相同的虚拟地址。<code>trampoline page</code>， 即蹦床页面很形象，即通过该页面从用户空间跳到了内核空间。</p>
+</blockquote>
+</li>
+<li>
+<p>执行<code>uservec</code>函数</p>
+<p><code>uservec</code>执行的第一步是交换<code>a0</code>和<code>SSCARTCH</code>的值。<code>SSCARTCH</code>寄存器保存<code>trapframe page</code>的地址，这样我们就得到了<code>trapframe page</code>的地址，可以将<code>32</code>个寄存器保存在<code>trapframe page</code>中了。</p>
+<blockquote>
+<p>xv6就每一个进程的<code>trapframe</code>分配一个页面，并安排它映射在用户虚拟地址的固定位置，位于<code>trampoline page</code>的下一个页面。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="c1"># kernel/trampoline.S
+</span></span></span><span class="line"><span class="cl"><span class="c1"># swap a0 and sscratch
+</span></span></span><span class="line"><span class="cl"><span class="c1"># so that a0 is TRAPFRAME
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">csrrw</span> <span class="no">a0</span><span class="p">,</span> <span class="no">sscratch</span><span class="p">,</span> <span class="no">a0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># save the user registers in TRAPFRAME
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">sd</span> <span class="no">ra</span><span class="p">,</span> <span class="mi">40</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sd</span> <span class="no">sp</span><span class="p">,</span> <span class="mi">48</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sd</span> <span class="no">gp</span><span class="p">,</span> <span class="mi">56</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sd</span> <span class="no">tp</span><span class="p">,</span> <span class="mi">64</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sd</span> <span class="no">t0</span><span class="p">,</span> <span class="mi">72</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sd</span> <span class="no">t1</span><span class="p">,</span> <span class="mi">80</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="na">...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">sd</span> <span class="no">t6</span><span class="p">,</span> <span class="mi">280</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># save the user a0 in p-&gt;trapframe-&gt;a0
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">csrr</span> <span class="no">t0</span><span class="p">,</span> <span class="no">sscratch</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sd</span> <span class="no">t0</span><span class="p">,</span> <span class="mi">112</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>接下来加载内核栈到<code>sp</code>，确保内核程序正常运行；保存CPU的<code>id</code>到<code>tp</code>，用来获取当前进程；向<code>t0</code>写入<code>usertrap</code>的指针；向<code>t1</code>写入内核页表的地址并与<code>SATP</code>寄存器进行交换，完成页表的切换，跳转到<code>usertrap</code>执行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="c1"># kernel/trampoline.S
+</span></span></span><span class="line"><span class="cl"><span class="c1"># restore kernel stack pointer from p-&gt;trapframe-&gt;kernel_sp
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">ld</span> <span class="no">sp</span><span class="p">,</span> <span class="mi">8</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># make tp hold the current hartid, from p-&gt;trapframe-&gt;kernel_hartid
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">ld</span> <span class="no">tp</span><span class="p">,</span> <span class="mi">32</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># load the address of usertrap(), p-&gt;trapframe-&gt;kernel_trap
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">ld</span> <span class="no">t0</span><span class="p">,</span> <span class="mi">16</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># restore kernel page table from p-&gt;trapframe-&gt;kernel_satp
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">ld</span> <span class="no">t1</span><span class="p">,</span> <span class="mi">0</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nf">csrw</span> <span class="no">satp</span><span class="p">,</span> <span class="no">t1</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sfence.vma</span> <span class="no">zero</span><span class="p">,</span> <span class="no">zero</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># a0 is no longer valid, since the kernel page
+</span></span></span><span class="line"><span class="cl"><span class="c1"># table does not specially map p-&gt;tf.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1"># jump to usertrap(), which does not return
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">jr</span> <span class="no">t0</span>						
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>执行<code>usertrap</code>函数</p>
+<p>首先设置寄存器，更改<code>STVEC</code>寄存器，指向内核空间<code>trap</code>处理代码的位置；将<code>SEPC</code>保存到<code>trampframe</code>中，防止程序执行过程中切换到另一个程序，另一个程序再调用系统调用导致<code>SEPC</code>数据被覆盖。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/trap.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">w_stvec</span><span class="p">((</span><span class="n">uint64</span><span class="p">)</span><span class="n">kernelvec</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">proc</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="n">myproc</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// save user program counter.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p</span><span class="o">-&gt;</span><span class="n">trapframe</span><span class="o">-&gt;</span><span class="n">epc</span> <span class="o">=</span> <span class="n">r_sepc</span><span class="p">();</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>针对<code>trap</code>的来源进行分析，如果陷阱来自系统调用<code>syscall</code>会处理它，根据系统调用号查找相应的系统调用函数，执行真正的系统调用，将返回值保存在<code>tramframe</code>的<code>a0</code>寄存器中；如果是设备中断，<code>devintr</code>会处理；否则它是一个异常，内核会杀死错误进程。最后调用<code>usertrapret</code>函数。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/trap.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span><span class="p">(</span><span class="n">r_scause</span><span class="p">()</span> <span class="o">==</span> <span class="mi">8</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// system call
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">killed</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">      <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// sepc points to the ecall instruction,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// but we want to return to the next instruction.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">p</span><span class="o">-&gt;</span><span class="n">trapframe</span><span class="o">-&gt;</span><span class="n">epc</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// an interrupt will change sstatus &amp;c registers,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// so don&#39;t enable until done with those registers.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">intr_on</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">syscall</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">((</span><span class="n">which_dev</span> <span class="o">=</span> <span class="n">devintr</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ok
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;usertrap(): unexpected scause %p pid=%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">r_scause</span><span class="p">(),</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">pid</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;            sepc=%p stval=%p</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">r_sepc</span><span class="p">(),</span> <span class="n">r_stval</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="o">-&gt;</span><span class="n">killed</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">killed</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>执行<code>usertrapret</code>，内核需要为返回内核空间做准备</p>
+<p>关闭中断，更新<code>STVEC</code>寄存器，指向<code>uservec</code>；设置<code>kernel page table</code>的指针，内核栈指针，<code>usertrap</code>函数的指针到<code>trapframe</code>中；设置<code>SSTATUS</code>寄存器，便于下一次从用户空间到内核空间的跳转，并恢复程序计数器<code>pc</code>的值。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/trap.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p</span><span class="o">-&gt;</span><span class="n">trapframe</span><span class="o">-&gt;</span><span class="n">kernel_satp</span> <span class="o">=</span> <span class="n">r_satp</span><span class="p">();</span>         <span class="c1">// kernel page table
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p</span><span class="o">-&gt;</span><span class="n">trapframe</span><span class="o">-&gt;</span><span class="n">kernel_sp</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">kstack</span> <span class="o">+</span> <span class="n">PGSIZE</span><span class="p">;</span> <span class="c1">// process&#39;s kernel stack
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">p</span><span class="o">-&gt;</span><span class="n">trapframe</span><span class="o">-&gt;</span><span class="n">kernel_trap</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint64</span><span class="p">)</span><span class="n">usertrap</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">-&gt;</span><span class="n">trapframe</span><span class="o">-&gt;</span><span class="n">kernel_hartid</span> <span class="o">=</span> <span class="n">r_tp</span><span class="p">();</span>    	  <span class="c1">// hartid for cpuid()
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="n">w_sepc</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">trapframe</span><span class="o">-&gt;</span><span class="n">epc</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>最后通过调用<code>userret</code>函数，将<code>trapframe page</code>的地址和用户页表的地址作为参数存储在<code>a0</code>，<code>a1</code>寄存器中，返回到用户空间的时候才能完成<code>page table</code>的切换。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">uint64</span> <span class="n">fn</span> <span class="o">=</span> <span class="n">TRAMPOLINE</span> <span class="o">+</span> <span class="p">(</span><span class="n">userret</span> <span class="o">-</span> <span class="n">trampoline</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">((</span><span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="n">uint64</span><span class="p">,</span><span class="n">uint64</span><span class="p">))</span><span class="n">fn</span><span class="p">)(</span><span class="n">TRAPFRAME</span><span class="p">,</span> <span class="n">satp</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>最后执行<code>userret</code></p>
+<p>首先切换页表</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">csrw</span> <span class="no">satp</span><span class="p">,</span> <span class="no">a1</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sfence.vma</span> <span class="no">zero</span><span class="p">,</span> <span class="no">zero</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># put the saved user a0 in sscratch, so we
+</span></span></span><span class="line"><span class="cl"><span class="c1"># can swap it with our a0 (TRAPFRAME) in the last step.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nf">ld</span> <span class="no">t0</span><span class="p">,</span> <span class="mi">112</span><span class="p">(</span><span class="no">a0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nf">csrw</span> <span class="no">sscratch</span><span class="p">,</span> <span class="no">t0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>接着恢复用户寄存器，最后调用<code>sret</code>，<code>sret</code>会打开中断，更改内核态为用户态，跳转pc指向的指令执行用户程序。</p>
+</li>
+</ol>
+<p> </p>
+<h2 id="实验内容">实验内容</h2>
+<h3 id="risc-v-assembly-easy">RISC-V assembly (easy)</h3>
+<ol>
+<li>
+<p><code>RISC-V</code>使用<code>a0</code>~<code>a7</code>共<code>8</code>个寄存器存储函数参数，若函数参数超过<code>8</code>个则需要存储在内存中，通过代码可以看出，<code>13</code>保存在<code>a2</code>寄存器中</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="c1"># user/call.asm
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="err">24:</span>	<span class="err">4635</span>                	<span class="nf">li</span>	<span class="no">a2</span><span class="p">,</span><span class="mi">13</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>通过代码看出，函数并没有对f调用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="c1"># user/call.asm
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="err">26:</span>	<span class="err">45</span><span class="nf">b1</span>                	<span class="no">li</span>	<span class="no">a1</span><span class="p">,</span><span class="mi">12</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><code>printf</code>的函数地址是<code>0x640</code></p>
+<p><code>auipc</code>指令将高20位立即数左移12位加上<code>pc</code>后，存入<code>ra</code>寄存器，<code>0x00000097</code>对应的高20位左移12位之后为<code>0x0</code>，<code>pc</code>寄存器为<code>0x30</code>，因此<code>ra</code>寄存器的值为<code>0x30</code>，加上偏移量即为<code>0x30 + 0x600(1536) = 0x630</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="c1"># user/call.asm
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="err">30:</span> <span class="err">00000097</span>       <span class="nf">auipc</span> <span class="no">ra</span><span class="p">,</span><span class="mi">0x0</span>
+</span></span><span class="line"><span class="cl"><span class="err">34:</span> <span class="err">600080</span><span class="nf">e7</span>       <span class="no">jalr</span>  <span class="mi">1536</span><span class="p">(</span><span class="no">ra</span><span class="p">)</span> <span class="c1"># 640 &lt;printf&gt;
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><code>printf</code>的<code>jalr</code>之后的寄存器<code>ra</code>值是<code>0x38</code></p>
+<p><code>jalr</code>指令当前<code>PC+4</code>保存在<code>rd</code>中，因此<code>jalr</code>之后寄存器<code>ra</code>值为<code>0x34 + 0x4 = 0x38</code></p>
+</li>
+<li>
+<p>程序输出<code>HE110 World</code>，大端需改成<code>0x726c6400</code> <code>57616</code>不需要改</p>
+<blockquote>
+<p>大端将高位存放在低地址，小段将高位存放在高地址</p>
+<p>大端存储<code>0x00646c72</code>		<code>00-64-6c-72</code></p>
+<p>小段存储<code>0x00646c72</code>		<code>72-6c-64-00</code></p>
+</blockquote>
+</li>
+<li>
+<p>没有参数传<code>a2</code>寄存器，<code>y</code>显示的值是原来<code>a2</code>寄存器的值。</p>
+</li>
+</ol>
+<h3 id="backtracemoderate">Backtrace(moderate)</h3>
+<p>backtrace实验需要打印函数执行过程中每个<code>stack frame</code>的地址。<code>stack frame</code>的格式已经介绍。</p>
+<ol>
+<li>
+<p>首先根据提示添加函数添加到<code>kernel/riscv.h</code>中，获取保存在<code>s0</code>寄存器的帧指针<code>fp</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">static</span> <span class="kr">inline</span> <span class="n">uint64</span>
+</span></span><span class="line"><span class="cl"><span class="nf">r_fp</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint64</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&#34;mv %0, s0&#34;</span> <span class="o">:</span> <span class="s">&#34;=r&#34;</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>实现<code>backtrace</code>函数，首先获取帧指针<code>fp</code>，并获取页栈页面的顶部地址，接着就打印<code>fp</code>的地址，并通过<code>frame</code>中指向前一个<code>frame</code>的指针获取前一个<code>frame</code>。直到到达页顶部，即已经打印了所有<code>stack frame</code>的地址。（需要在<code>kernel/defs.h</code>中声明）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/print.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">backtrace</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint64</span> <span class="n">fp</span> <span class="o">=</span> <span class="n">r_fp</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="n">uint64</span> <span class="n">stack_base</span> <span class="o">=</span> <span class="n">PGROUNDUP</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">printf</span><span class="p">(</span><span class="s">&#34;backtrace:</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">while</span><span class="p">(</span><span class="n">fp</span> <span class="o">&lt;</span> <span class="n">stack_base</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%p</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">*</span><span class="p">((</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="n">fp</span> <span class="o">-</span> <span class="mi">8</span><span class="p">)));</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fp</span> <span class="o">=</span> <span class="o">*</span><span class="p">((</span><span class="n">uint64</span><span class="o">*</span><span class="p">)(</span><span class="n">fp</span> <span class="o">-</span> <span class="mi">16</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h3 id="alarmhard">Alarm(Hard)</h3>
+<p><code>alarm</code>实验要求我们在进程使用CPU的时间内，xv6定期向进程发出警报。</p>
+<ol>
+<li>
+<p>首先添加系统调用，并在<code>user/usys.pl</code>中添加</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// user/user.h
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">sigalarm</span><span class="p">(</span><span class="kt">int</span> <span class="n">ticks</span><span class="p">,</span> <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">handler</span><span class="p">)());</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">sigreturn</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>首先在进程结构体中添加字段，并在<code>allocproc</code>进行初始化和<code>freeproc</code>回收</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/proc.h
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="n">proc</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">interval</span><span class="p">;</span>		<span class="c1">//警报间隔
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">tickcnt</span><span class="p">;</span>		<span class="c1">//距离上一次调用经过了多少个时钟
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">uint64</span> <span class="n">handler</span><span class="p">;</span>		<span class="c1">//警报处理函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/proc.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">static</span> <span class="k">struct</span> <span class="n">proc</span><span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="nf">allocproc</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="p">...</span>
+</span></span><span class="line"><span class="cl">  <span class="n">p</span><span class="o">-&gt;</span><span class="n">interval</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">p</span><span class="o">-&gt;</span><span class="n">tickcnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">p</span><span class="o">-&gt;</span><span class="n">handler</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// An empty user page table.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">p</span><span class="o">-&gt;</span><span class="n">pagetable</span> <span class="o">=</span> <span class="n">proc_pagetable</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/proc.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">static</span> <span class="kt">void</span>
+</span></span><span class="line"><span class="cl"><span class="nf">freeproc</span><span class="p">(</span><span class="k">struct</span> <span class="n">proc</span> <span class="o">*</span><span class="n">p</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="p">...</span>
+</span></span><span class="line"><span class="cl">  <span class="n">p</span><span class="o">-&gt;</span><span class="n">interval</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">p</span><span class="o">-&gt;</span><span class="n">tickcnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">p</span><span class="o">-&gt;</span><span class="n">handler</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>实现真正的<code>sys_sigalarm</code>函数和<code>sys_sigreturn</code>函数</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/syscall.h
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">#define SYS_sigalarm 22
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define SYS_sigreturn 23
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/syscall.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="k">extern</span> <span class="n">uint64</span> <span class="n">sys_sigalarm</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">extern</span> <span class="n">uint64</span> <span class="nf">sys_sigreturn</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="nf">uint64</span> <span class="p">(</span><span class="o">*</span><span class="n">syscalls</span><span class="p">[])(</span><span class="kt">void</span><span class="p">)</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">SYS_sigalarm</span><span class="p">]</span> <span class="n">sys_sigalarm</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">SYS_sigreturn</span><span class="p">]</span> <span class="n">sys_sigreturn</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/sysproc.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> 
+</span></span><span class="line"><span class="cl"><span class="nf">sys_sigalarm</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="n">argint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">myproc</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">interval</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="p">(</span><span class="n">argaddr</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">myproc</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">handler</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">uint64</span> 
+</span></span><span class="line"><span class="cl"><span class="nf">sys_sigreturn</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>修改<code>usertrap</code>，进程警报间隔期满时，设置<code>pc</code>值为警报处理函数<code>handler</code>的地址，同时清除时钟计数器</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/trap.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="n">which_dev</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="o">-&gt;</span><span class="n">tickcnt</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">tickcnt</span> <span class="o">==</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">interval</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">-&gt;</span><span class="n">tickcnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">-&gt;</span><span class="n">trapframe</span><span class="o">-&gt;</span><span class="n">epc</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">handler</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">yield</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>我们在<code>test0</code>测试中系统调用返回时返回的<code>handler</code>的地址，会导致无法回到用户程序之中，我们需要在<code>test1/test2</code>中处理正确返回到用户代码和防止重复调用的问题。我们需要在进程结构体中再加入两个字段，并在<code>allocproc</code>进行初始化和<code>freeproc</code>回收。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/proc.h
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="n">proc</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">interval</span><span class="p">;</span>		<span class="c1">//警报间隔
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">tickcnt</span><span class="p">;</span>		<span class="c1">//距离上一次调用经过了多少个时钟
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">uint64</span> <span class="n">handler</span><span class="p">;</span>		<span class="c1">//警报处理函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">int</span> <span class="n">flag</span><span class="p">;</span>			
+</span></span><span class="line"><span class="cl">  	<span class="k">struct</span> <span class="n">trapframe</span> <span class="o">*</span><span class="n">alarm_trapframe</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>添加保存进程陷阱帧<code>p-&gt;trapframe</code>到<code>p-&gt;alarm_trapframe</code>，并置<code>flag</code>为<code>1</code>，防止<code>handler</code>重复调用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/trap.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="n">which_dev</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="o">-&gt;</span><span class="n">tickcnt</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">flag</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">tickcnt</span> <span class="o">==</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">interval</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">memmove</span><span class="p">(</span><span class="n">p</span><span class="o">-&gt;</span><span class="n">alarm_trapframe</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">trapframe</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">trapframe</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">-&gt;</span><span class="n">tickcnt</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">-&gt;</span><span class="n">trapframe</span><span class="o">-&gt;</span><span class="n">epc</span> <span class="o">=</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">handler</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">-&gt;</span><span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">yield</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>实现<code>sys_sigreturn</code>函数，当<code>hanler</code>调用<code>sigreturn()</code>时恢复陷阱帧，同时将<code>flag</code>置零，保证下一个<code>handler</code>能够调用。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// kernel/sysproc.c
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">uint64</span> 
+</span></span><span class="line"><span class="cl"><span class="nf">sys_sigreturn</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">memmove</span><span class="p">(</span><span class="n">myproc</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">trapframe</span><span class="p">,</span> <span class="n">myproc</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">alarm_trapframe</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">trapframe</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="n">myproc</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2022-11-08</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/mit-6.s081-lab3-pgtbl/" class="prev" rel="prev" title="MIT 6.S081 Lab3 Pgtbl"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>MIT 6.S081 Lab3 Pgtbl</a></div> 
+</div> 
+<div id="comments"><div id="gitalk" class="comment"></div><noscript>
+                Please enable JavaScript to view the comments powered by <a href="https://github.com/gitalk/gitalk"></a>Gitalk</a>.
+            </noscript></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container">
+    
+        
+        <script async src=" //busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js "></script>
+    
+
+    
+        
+            <section>
+                
+                    <span id="busuanzi_container_value_site_pv"><i class="far fa-eye fa-fw"></i>
+                        
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+
+                
+                    &nbsp;|&nbsp;              
+                
+
+                
+                    <span id="busuanzi_container_value_site_uv"><i class="fa fa-user"></i>
+                        
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+            </section>
+        
+
+        
+        
+    
+
+
+<div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.104.3">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">lghost</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/css/lightgallery-bundle.min.css"><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/algoliasearch@4.13.1/dist/algoliasearch-lite.umd.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/lightgallery.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/thumbnail/lg-thumbnail.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lightgallery@2.5.0/plugins/zoom/lg-zoom.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{"gitalk":{"admin":["lghost1999"],"clientID":"adf9692f85583f23b0ef","clientSecret":"3c3a0d46d5556743daa7a4e56754601deeaaf86d","id":"2022-11-08T00:33:31+08:00","owner":"lghost1999","repo":"blog_comments","title":"MIT 6.S081 Lab4 Traps"}},"lightgallery":true,"search":{"algoliaAppID":"NATRHPDDQ5","algoliaIndex":"blog","algoliaSearchKey":"83e2b83adb274fdd9df7ece78e7c69e0","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

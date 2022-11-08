@@ -1,10 +1,10 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
-        <title>所有文章 - lghost&#39;s blog</title>
-        <link>https://lghost1999.github.io/posts/</link>
-        <description>所有文章 | lghost&#39;s blog</description>
+        <title>6.S081 - 分类 - lghost&#39;s blog</title>
+        <link>https://lghost1999.github.io/categories/6.s081/</link>
+        <description>6.S081 - 分类 - lghost&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>lghost1999@126.com (lghost)</managingEditor>
-            <webMaster>lghost1999@126.com (lghost)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 08 Nov 2022 00:33:31 &#43;0800</lastBuildDate><atom:link href="https://lghost1999.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>lghost1999@126.com (lghost)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 08 Nov 2022 00:33:31 &#43;0800</lastBuildDate><atom:link href="https://lghost1999.github.io/categories/6.s081/" rel="self" type="application/rss+xml" /><item>
     <title>MIT 6.S081 Lab4 Traps</title>
     <link>https://lghost1999.github.io/mit-6.s081-lab4-traps/</link>
     <pubDate>Tue, 08 Nov 2022 00:33:31 &#43;0800</pubDate>
@@ -35,14 +35,6 @@
     <author>lghost</author>
     <guid>https://lghost1999.github.io/mit-6.s081-lab1-util/</guid>
     <description><![CDATA[MIT 6.S801 实验1]]></description>
-</item>
-<item>
-    <title>算法题模板</title>
-    <link>https://lghost1999.github.io/algorithm_template/</link>
-    <pubDate>Sat, 10 Jul 2021 17:22:15 &#43;0800</pubDate>
-    <author>lghost</author>
-    <guid>https://lghost1999.github.io/algorithm_template/</guid>
-    <description><![CDATA[<p>Acwing算法基础课模板</p>]]></description>
 </item>
 </channel>
 </rss>
