@@ -4,7 +4,55 @@
         <link>https://lghost1999.github.io/categories/6.s081/</link>
         <description>6.S081 - 分类 - lghost&#39;s blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>lghost1999@126.com (lghost)</managingEditor>
-            <webMaster>lghost1999@126.com (lghost)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 08 Nov 2022 00:33:31 &#43;0800</lastBuildDate><atom:link href="https://lghost1999.github.io/categories/6.s081/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>lghost1999@126.com (lghost)</webMaster><copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright><lastBuildDate>Tue, 20 Dec 2022 18:29:48 &#43;0800</lastBuildDate><atom:link href="https://lghost1999.github.io/categories/6.s081/" rel="self" type="application/rss+xml" /><item>
+    <title>MIT 6.S081 Lab10 Mmap</title>
+    <link>https://lghost1999.github.io/mit-6.s081-lab10-mmap/</link>
+    <pubDate>Tue, 20 Dec 2022 18:29:48 &#43;0800</pubDate>
+    <author>lghost</author>
+    <guid>https://lghost1999.github.io/mit-6.s081-lab10-mmap/</guid>
+    <description><![CDATA[MIT 6.S801实验10]]></description>
+</item>
+<item>
+    <title>MIT 6.S081 Lab9 FS</title>
+    <link>https://lghost1999.github.io/mit-6.s081-lab9-fs/</link>
+    <pubDate>Tue, 13 Dec 2022 18:29:33 &#43;0800</pubDate>
+    <author>lghost</author>
+    <guid>https://lghost1999.github.io/mit-6.s081-lab9-fs/</guid>
+    <description><![CDATA[MIT 6.S801实验9]]></description>
+</item>
+<item>
+    <title>MIT 6.S081 Lab8 Lock</title>
+    <link>https://lghost1999.github.io/mit-6.s081-lab8-lock/</link>
+    <pubDate>Tue, 06 Dec 2022 18:28:49 &#43;0800</pubDate>
+    <author>lghost</author>
+    <guid>https://lghost1999.github.io/mit-6.s081-lab8-lock/</guid>
+    <description><![CDATA[MIT 6.S801实验8]]></description>
+</item>
+<item>
+    <title>MIT 6.S081 Lab7 Thread</title>
+    <link>https://lghost1999.github.io/mit-6.s081-lab7-thread/</link>
+    <pubDate>Tue, 29 Nov 2022 18:29:18 &#43;0800</pubDate>
+    <author>lghost</author>
+    <guid>https://lghost1999.github.io/mit-6.s081-lab7-thread/</guid>
+    <description><![CDATA[MIT 6.S801实验7]]></description>
+</item>
+<item>
+    <title>MIT 6.S081 Lab6 COW</title>
+    <link>https://lghost1999.github.io/mit-6.s081-lab6-cow/</link>
+    <pubDate>Tue, 22 Nov 2022 18:29:04 &#43;0800</pubDate>
+    <author>lghost</author>
+    <guid>https://lghost1999.github.io/mit-6.s081-lab6-cow/</guid>
+    <description><![CDATA[MIT 6.S801实验6]]></description>
+</item>
+<item>
+    <title>MIT 6.S081 Lab5 Traps</title>
+    <link>https://lghost1999.github.io/mit-6.s081-lab5-lazy/</link>
+    <pubDate>Tue, 15 Nov 2022 23:28:54 &#43;0800</pubDate>
+    <author>lghost</author>
+    <guid>https://lghost1999.github.io/mit-6.s081-lab5-lazy/</guid>
+    <description><![CDATA[MIT 6.S801实验5]]></description>
+</item>
+<item>
     <title>MIT 6.S081 Lab4 Traps</title>
     <link>https://lghost1999.github.io/mit-6.s081-lab4-traps/</link>
     <pubDate>Tue, 08 Nov 2022 00:33:31 &#43;0800</pubDate>
